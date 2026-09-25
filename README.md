@@ -40,7 +40,16 @@ Rotas: `/inscricoes/create` (form), `/inscricoes` (lista), `/consulta` (front da
 | `src/InscricaoRepository.php` | Todo o SQL (pessoas 1:N inscrições, transação) |
 | `banco.sql` | Schema normalizado: `pessoas` + `inscricoes` (FK, UNIQUE, índices) |
 
-## Como rodar
+## Legado (`legacy/`)
+
+Versão PHP puro (sem framework), preservada para referência. Para rodar:
+
+```bash
+cd legacy
+php -S 127.0.0.1:8000
+```
+
+## Como rodar (legado)
 
 1. Inicie o MySQL e importe o schema:
    ```sql

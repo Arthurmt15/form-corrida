@@ -3,7 +3,7 @@
   <h2><span class="green">3</span> Endereço Completo</h2>
   <div class="grid address-top">
     <label>CEP *
-      <input type="text" name="cep" id="cep" required maxlength="9" placeholder="00000-000">
+      <input type="text" name="cep" id="cep" required maxlength="9" placeholder="00000-000" inputmode="numeric" pattern="[0-9\-]+" title="Somente números">
     </label>
     <label>Logradouro *
       <input type="text" name="logradouro" id="logradouro" required maxlength="150" placeholder="Rua, Avenida, Praça, etc.">

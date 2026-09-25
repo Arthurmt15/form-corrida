@@ -17,7 +17,7 @@
       </select>
     </label>
     <label>CPF / CNPJ *
-      <input type="text" name="cpf_cnpj" required maxlength="18" placeholder="000.000.000-00">
+      <input type="text" name="cpf_cnpj" required maxlength="18" placeholder="000.000.000-00" inputmode="numeric" pattern="[0-9.\-/ ]+" title="Somente números">
     </label>
     <label>RG / Inscrição Estadual
       <input type="text" name="rg_ie" maxlength="20" placeholder="Digite o RG ou inscrição estadual">

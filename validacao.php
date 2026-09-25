@@ -41,10 +41,17 @@ function cnpj_digitos_ok(string $n): bool {
 }
 
 function cpf_cnpj_ok(string $v): bool {
+  if (preg_match('/[a-zA-Z]/', $v)) return false; // letras nunca são válidas aqui
   $n = preg_replace('/\D/', '', $v);
   if (strlen($n) === 11) return cpf_digitos_ok($n);
   if (strlen($n) === 14) return cnpj_digitos_ok($n);
   return false;
+}
+
+function celular_ok(string $v): bool {
+  if ($v === '' || preg_match('/[a-zA-Z]/', $v)) return false;
+  $n = preg_replace('/\D/', '', $v);
+  return in_array(strlen($n), [10, 11], true); // fixo=10, celular=11 (com DDD)
 }
 
 // LGPD: mascara documento na exibição (mostra só início/fim).
@@ -56,6 +63,7 @@ function mascarar_doc(string $v): string {
 }
 
 function cep_ok(string $v): bool {
+  if (preg_match('/[a-zA-Z]/', $v)) return false; // CEP só aceita números
   return (bool) preg_match('/^\d{5}-?\d{3}$/', trim($v));
 }
 
@@ -77,6 +85,8 @@ function validar_inscricao(array $d): array {
   if (!empty($d['email']) && !email_ok($d['email'])) $erros[] = 'E-mail principal inválido.';
   if (!empty($d['email2']) && !email_ok($d['email2'])) $erros[] = 'E-mail secundário inválido.';
   if (!empty($d['cpf_cnpj']) && !cpf_cnpj_ok($d['cpf_cnpj'])) $erros[] = 'CPF/CNPJ inválido (dígitos verificadores).';
+  if (!empty($d['celular']) && !celular_ok($d['celular'])) $erros[] = 'Celular inválido (somente números, com DDD).';
+  if (!empty($d['telefone_fixo']) && !celular_ok($d['telefone_fixo'])) $erros[] = 'Telefone fixo inválido (somente números).';
   if (!empty($d['cep']) && !cep_ok($d['cep'])) $erros[] = 'CEP inválido.';
   if (!empty($d['uf']) && !uf_ok($d['uf'])) $erros[] = 'UF inválida.';
   if (!empty($d['data_nascimento']) && !data_ok($d['data_nascimento'])) $erros[] = 'Data de nascimento/fundação inválida.';

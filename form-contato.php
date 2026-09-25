@@ -11,11 +11,11 @@
   </div>
   <div class="grid contact-row">
     <label>Celular (DDD) *
-      <input type="tel" name="celular" required maxlength="20" placeholder="(00) 00000-0000">
+      <input type="tel" name="celular" required maxlength="20" placeholder="(00) 00000-0000" inputmode="numeric" pattern="[0-9()\- ]+" title="Somente números">
     </label>
     <label class="check-label"><input type="checkbox" name="tem_whatsapp" value="1" id="zap" checked> Tem WhatsApp</label>
     <label>Telefone fixo / comercial
-      <input type="tel" name="telefone_fixo" maxlength="20" placeholder="(00) 0000-0000">
+      <input type="tel" name="telefone_fixo" maxlength="20" placeholder="(00) 0000-0000" inputmode="numeric" pattern="[0-9()\- ]+" title="Somente números">
     </label>
   </div>
 </section>

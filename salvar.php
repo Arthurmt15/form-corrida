@@ -1,4 +1,5 @@
 <?php
+// Contexto: recebe POST do index.php, valida (obrigatórios + e-mails + aceite) e insere via PDO preparado.
 require 'conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

@@ -1,3 +1,4 @@
+<?php // Parcial: seção 1 - Identificação (quem é). Incluído via index.php. ?>
 <h5 class="titulo-faixa mt-2">1. Dados de Identificação</h5>
 <div class="col-md-6">
   <label class="form-label">Nome completo / Razão Social *</label>

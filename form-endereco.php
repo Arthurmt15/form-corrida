@@ -1,3 +1,4 @@
+<?php // Parcial: seção 3 - Endereço (onde está). CEP autopreenche via viacep.js. ?>
 <h5 class="titulo-faixa mt-3">3. Endereço Completo</h5>
 <div class="col-md-4">
   <label class="form-label">CEP *</label>

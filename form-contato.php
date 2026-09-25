@@ -1,3 +1,4 @@
+<?php // Parcial: seção 2 - Contato (como falar). Incluído via index.php. ?>
 <h5 class="titulo-faixa mt-3">2. Informações de Contato</h5>
 <div class="col-md-6">
   <label class="form-label">E-mail principal *</label>

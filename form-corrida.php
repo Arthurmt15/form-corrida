@@ -1,3 +1,4 @@
+<?php // Parcial: seção 4 - Corrida + controle interno (origem/status). ?>
 <h5 class="titulo-faixa mt-3">4. Dados da Corrida</h5>
 <div class="col-md-4">
   <label class="form-label">Distância *</label>

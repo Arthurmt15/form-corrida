@@ -1,4 +1,6 @@
-<?php require 'conexao.php';
+<?php
+// Contexto: lista resumida de inscritos (id, nome, doc, contato, cidade/UF, distância, status).
+require 'conexao.php';
 $inscricoes = $pdo->query("SELECT id, nome, cpf_cnpj, email, celular, cidade, uf, distancia, status_cadastro, criado_em FROM inscricoes ORDER BY criado_em DESC")->fetchAll();
 ?>
 <!DOCTYPE html>

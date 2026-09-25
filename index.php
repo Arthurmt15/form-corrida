@@ -1,4 +1,6 @@
-<?php require 'conexao.php'; ?>
+<?php
+// Contexto: página principal — monta o formulário por includes (4 parciais) + validações Bootstrap.
+require 'conexao.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>

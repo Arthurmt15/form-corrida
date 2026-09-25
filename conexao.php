@@ -1,4 +1,5 @@
 <?php
+// Contexto: conexão PDO com MySQL (corrida_db). Ajuste host/user/pass se preciso.
 $host = 'localhost';
 $db   = 'corrida_db';
 $user = 'root';

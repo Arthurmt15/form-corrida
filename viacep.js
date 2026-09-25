@@ -1,3 +1,4 @@
+// Contexto: ao sair do campo CEP, busca ViaCEP e preenche logradouro/bairro/cidade/UF.
 document.getElementById('cep')?.addEventListener('blur', async (e) => {
   const cep = e.target.value.replace(/\D/g, '');
   if (cep.length !== 8) return;

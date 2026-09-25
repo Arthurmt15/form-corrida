@@ -1,3 +1,4 @@
+-- Contexto: schema corrida_db + tabela inscricoes (4 seções do formulário + controle interno).
 CREATE DATABASE IF NOT EXISTS corrida_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE corrida_db;
 

@@ -11,6 +11,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class InscricaoController extends Controller
 {
     // GET /api/inscricoes?q=&page=&per_page= (máx. 100, anti-abuso).
+    // Contexto: lista JSON paginada (20/pág, máx. 100) com busca por nome, e-mail ou cidade.
     public function index(Request $request): AnonymousResourceCollection
     {
         $q = trim($request->query('q', ''));

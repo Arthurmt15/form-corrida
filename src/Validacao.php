@@ -2,20 +2,24 @@
 // Contexto: sanitização + validação central. Testada por testes.php. Usada por salvar.php.
 // Regras: XSS (escape na saída), e-mail, datas, listas fechadas, tamanhos máximos.
 
+// Contexto: remove tags/trim e corta no tamanho máximo (anti-overflow e XSS armazenado).
 function limpar(string $v, int $max = 150): string {
   $v = trim(strip_tags($v));
   return mb_substr($v, 0, $max);
 }
 
+// Contexto: e-mail válido no formato padrão (usado no principal e no secundário).
 function email_ok(string $v): bool {
   return (bool) filter_var($v, FILTER_VALIDATE_EMAIL);
 }
 
+// Contexto: data real no formato AAAA-MM-DD e nunca futura (nascimento/fundação).
 function data_ok(string $v): bool {
   $d = DateTime::createFromFormat('Y-m-d', $v);
   return $d && $d->format('Y-m-d') === $v && $v <= date('Y-m-d');
 }
 
+// Contexto: confere os 2 dígitos verificadores do CPF; sequências repetidas (111...) são falsas.
 function cpf_digitos_ok(string $n): bool {
   if (strlen($n) !== 11 || preg_match('/^(\d)\1{10}$/', $n)) return false;
   for ($t = 9; $t < 11; $t++) {
@@ -27,6 +31,7 @@ function cpf_digitos_ok(string $n): bool {
   return true;
 }
 
+// Contexto: confere os 2 dígitos verificadores do CNPJ (pesos 5-2 e 6-2).
 function cnpj_digitos_ok(string $n): bool {
   if (strlen($n) !== 14 || preg_match('/^(\d)\1{13}$/', $n)) return false;
   $p1 = [5,4,3,2,9,8,7,6,5,4,3,2];
@@ -40,6 +45,7 @@ function cnpj_digitos_ok(string $n): bool {
   return true;
 }
 
+// Contexto: aceita CPF (11) ou CNPJ (14) com dígitos válidos; qualquer letra reprova.
 function cpf_cnpj_ok(string $v): bool {
   if (preg_match('/[a-zA-Z]/', $v)) return false; // letras nunca são válidas aqui
   $n = preg_replace('/\D/', '', $v);
@@ -48,13 +54,14 @@ function cpf_cnpj_ok(string $v): bool {
   return false;
 }
 
+// Contexto: fixo tem 10 dígitos e celular 11 (ambos com DDD); letras reprovam.
 function celular_ok(string $v): bool {
   if ($v === '' || preg_match('/[a-zA-Z]/', $v)) return false;
   $n = preg_replace('/\D/', '', $v);
   return in_array(strlen($n), [10, 11], true); // fixo=10, celular=11 (com DDD)
 }
 
-// LGPD: mascara documento na exibição (mostra só início/fim).
+// Contexto: exibe só início/fim do documento (LGPD) — ex: 529.***.***-25.
 function mascarar_doc(string $v): string {
   $n = preg_replace('/\D/', '', $v);
   if (strlen($n) === 11) return substr($n, 0, 3) . '.***.***-' . substr($n, -2);
@@ -62,21 +69,24 @@ function mascarar_doc(string $v): string {
   return '***';
 }
 
+// Contexto: CEP no formato 00000-000 (só números); letras reprovam.
 function cep_ok(string $v): bool {
   if (preg_match('/[a-zA-Z]/', $v)) return false; // CEP só aceita números
   return (bool) preg_match('/^\d{5}-?\d{3}$/', trim($v));
 }
 
+// Contexto: UF precisa ser uma das 27 siglas oficiais (case-insensitive).
 function uf_ok(string $v): bool {
   $ufs = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'];
   return in_array(strtoupper(trim($v)), $ufs, true);
 }
 
+// Contexto: valor precisa pertencer à lista fechada (distância, status etc.).
 function enum_ok(string $v, array $lista): bool {
   return in_array($v, $lista, true);
 }
 
-// Valida o pacote da inscrição; retorna lista de erros (vazia = válido).
+// Contexto: valida o pacote completo da inscrição; retorna erros (vazio = válido). Usada no salvar.php.
 function validar_inscricao(array $d): array {
   $erros = [];
   foreach (['nome','cpf_cnpj','data_nascimento','email','celular','cep','logradouro','numero','bairro','cidade','uf','distancia','tamanho_camiseta','categoria'] as $c) {

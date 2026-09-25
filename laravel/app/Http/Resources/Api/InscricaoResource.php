@@ -8,6 +8,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class InscricaoResource extends JsonResource
 {
     /**
+     * Contexto: formato público da inscrição — documento mascarado (LGPD), sem e-mail secundário.
+     *
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array

@@ -9,6 +9,7 @@ class InscricaoTest extends TestCase
 {
     use RefreshDatabase;
 
+    // Contexto: massa de dados válida; $over sobrescreve campos para cada cenário.
     private function payload(array $over = []): array
     {
         return array_merge([
@@ -33,11 +34,13 @@ class InscricaoTest extends TestCase
         ], $over);
     }
 
+    // Contexto: formulário abre com a primeira seção visível.
     public function test_create_exibe_formulario(): void
     {
         $this->get('/inscricoes/create')->assertOk()->assertSee('Dados de Identificação');
     }
 
+    // Contexto: payload válido grava pessoa + inscrição e redireciona ao formulário.
     public function test_store_salva_pessoa_e_inscricao(): void
     {
         $r = $this->post('/inscricoes', $this->payload());
@@ -46,18 +49,21 @@ class InscricaoTest extends TestCase
         $this->assertDatabaseHas('inscricoes', ['distancia' => '5km']);
     }
 
+    // Contexto: CPF com dígitos errados volta com erro e nada é gravado.
     public function test_store_rejeita_cpf_invalido(): void
     {
         $this->post('/inscricoes', $this->payload(['cpf_cnpj' => '123.456.789-00']))
             ->assertSessionHasErrors('cpf_cnpj');
     }
 
+    // Contexto: letra no celular volta com erro de validação.
     public function test_store_rejeita_celular_com_letra(): void
     {
         $this->post('/inscricoes', $this->payload(['celular' => '(11) 9999a-9999']))
             ->assertSessionHasErrors('celular');
     }
 
+    // Contexto: mesmo CPF na mesma distância é barrado (UNIQUE) sem duplicar.
     public function test_store_bloqueia_duplicata_mesma_distancia(): void
     {
         $this->post('/inscricoes', $this->payload())->assertRedirect();
@@ -66,6 +72,7 @@ class InscricaoTest extends TestCase
         $this->assertDatabaseCount('inscricoes', 1);
     }
 
+    // Contexto: API lista em JSON com documento mascarado (LGPD).
     public function test_api_lista_com_documento_mascarado(): void
     {
         $this->post('/inscricoes', $this->payload());

@@ -33,13 +33,14 @@ class InscricaoRepository {
     }
   }
 
-  // Cláusula de busca compartilhada por contar() e buscar().
+  // Contexto: WHERE de busca (nome/e-mail/cidade) compartilhado por contar() e buscar().
   private static function filtro(string $q, array &$params): string {
     if (trim($q) === '') return '';
     $params[':q'] = '%' . trim($q) . '%';
     return 'WHERE p.nome LIKE :q OR p.email LIKE :q OR p.cidade LIKE :q';
   }
 
+  // Contexto: total de inscrições (com o mesmo filtro da busca) para a paginação.
   public static function contar(PDO $pdo, string $q): int {
     $params = [];
     $stmt = $pdo->prepare('SELECT COUNT(*) AS t FROM inscricoes i JOIN pessoas p ON p.id = i.pessoa_id ' . self::filtro($q, $params));
@@ -47,7 +48,7 @@ class InscricaoRepository {
     return (int) $stmt->fetch()['t'];
   }
 
-  // Lista paginada com JOIN (todos os campos que listar/api/consulta exibem).
+  // Contexto: página de inscrições com JOIN pessoa (mais recentes primeiro).
   public static function buscar(PDO $pdo, string $q, int $limite, int $offset): array {
     $params = [];
     $stmt = $pdo->prepare(

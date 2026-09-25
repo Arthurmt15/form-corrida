@@ -1,10 +1,13 @@
 // Consome /api/inscricoes (paginador do Laravel) e renderiza tabela + paginação (com escape anti-XSS).
+// Contexto: atalho para buscar elemento por id.
 const $ = (id) => document.getElementById(id);
 
+// Contexto: escapa HTML da API antes de injetar na tabela (anti-XSS).
 function esc(v) {
   return String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+// Contexto: busca página na API e redesenha tabela, status e paginação (com debounce no input).
 async function buscar(pagina = 1) {
   const q = $('q').value.trim();
   const perPage = $('limite').value;

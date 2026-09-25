@@ -9,7 +9,7 @@ use Illuminate\Translation\PotentiallyTranslatedString;
 class CpfCnpj implements ValidationRule
 {
     /**
-     * Run the validation rule.
+     * Contexto: valida CPF (11) ou CNPJ (14) pelos dígitos verificadores; letras são rejeitadas.
      *
      * @param  Closure(string, ?string=): PotentiallyTranslatedString  $fail
      */
@@ -28,6 +28,7 @@ class CpfCnpj implements ValidationRule
         }
     }
 
+    // Contexto: confere os 2 dígitos verificadores do CPF (módulo 11); sequências repetidas são falsas.
     private function cpfOk(string $n): bool
     {
         if (preg_match('/^(\d)\1{10}$/', $n)) {
@@ -46,6 +47,7 @@ class CpfCnpj implements ValidationRule
         return true;
     }
 
+    // Contexto: confere os 2 dígitos verificadores do CNPJ (pesos 5-2 e 6-2); repetidos são falsos.
     private function cnpjOk(string $n): bool
     {
         if (preg_match('/^(\d)\1{13}$/', $n)) {

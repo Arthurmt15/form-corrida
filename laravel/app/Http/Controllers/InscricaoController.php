@@ -12,6 +12,7 @@ use Illuminate\View\View;
 
 class InscricaoController extends Controller
 {
+    // Contexto: lista paginada (20/pág) com busca por nome, e-mail ou cidade da pessoa.
     public function index(Request $request): View
     {
         $q = trim($request->query('q', ''));
@@ -27,11 +28,13 @@ class InscricaoController extends Controller
         return view('inscricoes.index', compact('inscricoes', 'q'));
     }
 
+    // Contexto: exibe o formulário em branco (4 seções via partials Blade).
     public function create(): View
     {
         return view('inscricoes.create');
     }
 
+    // Contexto: grava pessoa (reaproveita por CPF) + inscrição em transação; duplicata volta com erro amigável.
     public function store(StoreInscricaoRequest $request): RedirectResponse
     {
         // Honeypot anti-bot: preenchido = finge sucesso sem salvar.

@@ -6,6 +6,7 @@ require 'config/database.php';
 require 'src/Validacao.php';
 require 'src/InscricaoRepository.php';
 
+// Contexto: volta ao formulário com mensagem de erro genérica (sem detalhe interno).
 function falhar(string $msg): void {
   header('Location: index.php?erro=' . urlencode($msg));
   exit;

@@ -9,7 +9,7 @@ use Illuminate\Translation\PotentiallyTranslatedString;
 class Celular implements ValidationRule
 {
     /**
-     * Run the validation rule.
+     * Contexto: valida celular/fixo — só dígitos e máscara, 10 (fixo) ou 11 (celular) dígitos com DDD.
      *
      * @param  Closure(string, ?string=): PotentiallyTranslatedString  $fail
      */

@@ -4,6 +4,7 @@
 require __DIR__ . '/src/Validacao.php';
 
 $pass = 0; $fail = 0;
+// Contexto: registra um caso de teste (PASS/FAIL) e acumula o placar final.
 function check(string $nome, bool $cond): void {
   global $pass, $fail;
   if ($cond) { $pass++; echo "PASS: $nome\n"; }

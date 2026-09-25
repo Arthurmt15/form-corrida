@@ -14,17 +14,19 @@ class Inscricao extends Model
         'equipe', 'origem', 'status_cadastro', 'aceite_regulamento',
     ];
 
+    // Contexto: converte aceite_regulamento (0/1 do banco) para boolean no PHP.
     protected function casts(): array
     {
         return ['aceite_regulamento' => 'boolean'];
     }
 
+    // Contexto: toda inscrição pertence a uma pessoa (FK pessoa_id).
     public function pessoa(): BelongsTo
     {
         return $this->belongsTo(Pessoa::class);
     }
 
-    // LGPD: documento mascarado na exibição.
+    // Contexto: exibe só início/fim do documento (LGPD) — ex: 529.***.***-25.
     public function documentoMascarado(): string
     {
         $n = preg_replace('/\D/', '', $this->pessoa->cpf_cnpj);

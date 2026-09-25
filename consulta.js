@@ -1,11 +1,14 @@
 // Contexto: consome api.php via fetch e renderiza tabela + paginação (com escape anti-XSS).
+// Contexto: atalho para buscar elemento por id.
 const $ = (id) => document.getElementById(id);
 let paginaAtual = 1;
 
+// Contexto: escapa HTML da API antes de injetar na tabela (anti-XSS).
 function esc(v) {
   return String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+// Contexto: busca página na api.php e redesenha tabela, status e paginação (com debounce no input).
 async function buscar(pagina = 1) {
   paginaAtual = pagina;
   const q = $('q').value.trim();

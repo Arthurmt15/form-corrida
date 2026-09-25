@@ -9,12 +9,15 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreInscricaoRequest extends FormRequest
 {
+    // Contexto: formulário público — qualquer visitante pode se inscrever (sem login).
     public function authorize(): bool
     {
         return true;
     }
 
     /**
+     * Contexto: regras das 4 seções do formulário (tipos, tamanhos, listas fechadas, dígitos).
+     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
@@ -55,6 +58,7 @@ class StoreInscricaoRequest extends FormRequest
         ];
     }
 
+    // Contexto: mensagens em PT-BR para as regras que precisam de texto amigável.
     public function messages(): array
     {
         return ['aceite_regulamento.accepted' => 'É preciso aceitar o regulamento.'];

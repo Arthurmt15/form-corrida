@@ -16,11 +16,13 @@ class Pessoa extends Model
         'complemento', 'bairro', 'cidade', 'uf',
     ];
 
+    // Contexto: converte tem_whatsapp (0/1 do banco) para boolean no PHP.
     protected function casts(): array
     {
         return ['tem_whatsapp' => 'boolean'];
     }
 
+    // Contexto: uma pessoa pode ter várias inscrições (ex: 5km e 10km).
     public function inscricoes(): HasMany
     {
         return $this->hasMany(Inscricao::class);

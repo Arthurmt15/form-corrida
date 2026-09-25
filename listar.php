@@ -1,5 +1,5 @@
 <?php require 'conexao.php';
-$inscricoes = $pdo->query("SELECT * FROM inscricoes ORDER BY criado_em DESC")->fetchAll();
+$inscricoes = $pdo->query("SELECT id, nome, cpf_cnpj, email, celular, cidade, uf, distancia, status_cadastro, criado_em FROM inscricoes ORDER BY criado_em DESC")->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -18,13 +18,12 @@ $inscricoes = $pdo->query("SELECT * FROM inscricoes ORDER BY criado_em DESC")->f
       <a href="index.php" class="btn btn-amarelo">Nova Inscrição</a>
     </div>
   </div>
-  </div>
-  <div class="card shadow">
+  <div class="card shadow card-tema">
     <div class="table-responsive">
       <table class="table table-striped mb-0">
         <thead class="thead-tema">
           <tr>
-            <th>#</th><th>Nome</th><th>E-mail</th><th>Distância</th><th>Categoria</th><th>Camiseta</th><th>Data</th>
+            <th>ID</th><th>Nome</th><th>CPF/CNPJ</th><th>Contato</th><th>Cidade/UF</th><th>Distância</th><th>Status</th><th>Criado em</th>
           </tr>
         </thead>
         <tbody>
@@ -32,15 +31,16 @@ $inscricoes = $pdo->query("SELECT * FROM inscricoes ORDER BY criado_em DESC")->f
           <tr>
             <td><?= $i['id'] ?></td>
             <td><?= htmlspecialchars($i['nome']) ?></td>
-            <td><?= htmlspecialchars($i['email']) ?></td>
+            <td><?= htmlspecialchars($i['cpf_cnpj']) ?></td>
+            <td><?= htmlspecialchars($i['email']) ?><br><small><?= htmlspecialchars($i['celular']) ?></small></td>
+            <td><?= htmlspecialchars($i['cidade']) ?>/<?= htmlspecialchars($i['uf']) ?></td>
             <td><span class="badge badge-distancia"><?= $i['distancia'] ?></span></td>
-            <td><?= htmlspecialchars($i['categoria']) ?></td>
-            <td><?= $i['tamanho_camiseta'] ?></td>
+            <td><?= htmlspecialchars($i['status_cadastro']) ?></td>
             <td><?= date('d/m/Y H:i', strtotime($i['criado_em'])) ?></td>
           </tr>
           <?php endforeach; ?>
           <?php if (!count($inscricoes)): ?>
-            <tr><td colspan="7" class="text-center py-4">Nenhuma inscrição ainda.</td></tr>
+            <tr><td colspan="8" class="text-center py-4">Nenhum cadastro ainda.</td></tr>
           <?php endif; ?>
         </tbody>
       </table>

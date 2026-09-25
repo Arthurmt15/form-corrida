@@ -1,9 +1,10 @@
 <?php
-// Contexto: recebe POST, aplica segurança (CSRF/honeypot/rate-limit) + validacao.php e insere via PDO.
-require 'seguranca.php';
-require 'csrf.php';
-require 'conexao.php';
-require 'validacao.php';
+// Contexto: recebe POST, aplica segurança + validação e delega ao InscricaoRepository.
+require 'src/Seguranca.php';
+require 'src/Csrf.php';
+require 'config/database.php';
+require 'src/Validacao.php';
+require 'src/InscricaoRepository.php';
 
 function falhar(string $msg): void {
   header('Location: index.php?erro=' . urlencode($msg));
@@ -63,22 +64,30 @@ $dados = [
   'aceite' => isset($_POST['aceite_regulamento']) ? 1 : 0,
 ];
 
-// 5. Validação central (regras em validacao.php, cobertas por testes.php).
+// 5. Validação central (regras em src/Validacao.php, cobertas por testes.php).
 $erros = validar_inscricao($dados);
 if ($erros) falhar($erros[0]);
 if (!$db_ok || !$pdo) falhar('Serviço temporariamente indisponível. Tente novamente em instantes.');
 
+// 6. Separa pessoa x inscrição; repositório grava em transação.
+$pessoa = array_intersect_key($dados, array_flip(['nome','nome_social','tipo_pessoa','cpf_cnpj','rg_ie','data_nascimento','genero','email','email2','celular','tem_whatsapp','telefone_fixo','cep','logradouro','numero','complemento','bairro','cidade','uf']));
+$insc = [
+  'distancia' => $dados['distancia'],
+  'tamanho_camiseta' => $dados['tamanho_camiseta'],
+  'categoria' => $dados['categoria'],
+  'equipe' => $dados['equipe'],
+  'origem' => $dados['origem'],
+  'status_cadastro' => $dados['status_cadastro'],
+  'aceite_regulamento' => $dados['aceite'],
+];
+
 try {
-  // 6. SQL com placeholders = anti SQL injection (nunca concatena valor).
-  $cols = ['nome','nome_social','tipo_pessoa','cpf_cnpj','rg_ie','data_nascimento','genero','email','email2','celular','tem_whatsapp','telefone_fixo','cep','logradouro','numero','complemento','bairro','cidade','uf','distancia','tamanho_camiseta','categoria','equipe','origem','status_cadastro','aceite_regulamento'];
-  $sql = 'INSERT INTO inscricoes (' . implode(',', $cols) . ') VALUES (:' . implode(',:', $cols) . ')';
-  $params = [];
-  foreach ($cols as $c) {
-    $params[":$c"] = ($c === 'aceite_regulamento') ? $dados['aceite'] : $dados[$c];
-  }
-  $pdo->prepare($sql)->execute($params);
+  $id = InscricaoRepository::salvar($pdo, $pessoa, $insc);
   unset($_SESSION['csrf_token']); // token de uso único
-  header('Location: index.php?sucesso=1&id=' . $pdo->lastInsertId());
+  header("Location: index.php?sucesso=1&id=$id");
+} catch (RuntimeException $e) {
+  if ($e->getMessage() === 'DUPLICADO') falhar('Este CPF/CNPJ já está inscrito nesta distância.');
+  falhar('Erro ao salvar. Tente novamente.');
 } catch (PDOException $e) {
   error_log('Erro salvar inscricao: ' . $e->getMessage()); // log interno, sem vazar detalhe
   falhar('Erro ao salvar. Tente novamente.');

@@ -1,6 +1,6 @@
 <?php
 // Contexto: front do endpoint api.php — busca e lista cadastrados via fetch (JSON).
-require 'seguranca.php'; ?>
+require 'src/Seguranca.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>

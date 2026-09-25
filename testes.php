@@ -1,7 +1,7 @@
 <?php
 // Contexto: testes sem framework. Roda via CLI (php testes.php) ou navegador (testes.php).
-// Cobre validacao.php: e-mail, CPF/CNPJ, CEP, UF, data, enums e pacote completo.
-require __DIR__ . '/validacao.php';
+// Cobre src/Validacao.php: e-mail, CPF/CNPJ, CEP, UF, data, enums e pacote completo.
+require __DIR__ . '/src/Validacao.php';
 
 $pass = 0; $fail = 0;
 function check(string $nome, bool $cond): void {

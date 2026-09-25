@@ -14,15 +14,16 @@ Formulário de inscrição para corrida em PHP + MySQL + Bootstrap 5.
 | Arquivo | Contexto |
 |---|---|
 | `index.php` | Página principal; monta o form via `include` dos parciais |
-| `form-identificacao.php` | Seção 1 — quem é (nome/razão, CPF/CNPJ, RG/IE, nascimento/fundação, gênero) |
-| `form-contato.php` | Seção 2 — como falar (e-mails, celular + WhatsApp, fixo) |
-| `form-endereco.php` | Seção 3 — onde está (CEP autopreenche via `viacep.js`) |
-| `form-corrida.php` | Seção 4 — corrida + controle interno (distância, camiseta, categoria, origem, status) |
-| `salvar.php` | Recebe o POST, valida e insere com PDO |
-| `listar.php` | Tabela resumida dos inscritos |
-| `conexao.php` | Conexão PDO; se MySQL cair, `$db_ok=false` e o form renderiza em modo visual |
-| `banco.sql` | Schema + `CREATE TABLE inscricoes` |
-| `style.css` | Tema: branco predominante, azul secundário, detalhes preto/amarelo |
+| `form-*.php` | Seções 1–4 do formulário (identificação, contato, endereço, corrida) |
+| `salvar.php` | Recebe o POST, valida e delega ao repositório |
+| `listar.php` / `consulta.php` | Tabela server-side / front via `api.php` |
+| `api.php` | GET JSON dos cadastrados (busca + paginação) |
+| `config/database.php` | Conexão PDO via env; sem MySQL, `$db_ok=false` (modo visual) |
+| `src/Seguranca.php` | Headers anti-ataque + sessão segura |
+| `src/Csrf.php` | Token CSRF de uso único |
+| `src/Validacao.php` | Sanitização + regras (coberta por `testes.php`) |
+| `src/InscricaoRepository.php` | Todo o SQL (pessoas 1:N inscrições, transação) |
+| `banco.sql` | Schema normalizado: `pessoas` + `inscricoes` (FK, UNIQUE, índices) |
 
 ## Como rodar
 

@@ -1,9 +1,10 @@
 <?php
 // Contexto: API GET de cadastrados em JSON. Uso: api.php?q=Ana&pagina=1&limite=20.
 // LGPD: documento sai mascarado; e-mail secundário e IDs internos não são expostos.
-require 'seguranca.php';
-require 'conexao.php';
-require 'validacao.php';
+require 'src/Seguranca.php';
+require 'config/database.php';
+require 'src/Validacao.php';
+require 'src/InscricaoRepository.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -24,26 +25,10 @@ $pagina = max(1, (int) ($_GET['pagina'] ?? 1));
 $limite = min(100, max(1, (int) ($_GET['limite'] ?? 20))); // teto anti-abuso
 $offset = ($pagina - 1) * $limite;
 
-$where = '';
-$params = [];
-if ($busca !== '') {
-  $where = 'WHERE nome LIKE :q OR email LIKE :q OR cidade LIKE :q';
-  $params[':q'] = "%$busca%";
-}
-
-$stmt = $pdo->prepare("SELECT COUNT(*) AS t FROM inscricoes $where");
-$stmt->execute($params);
-$total = (int) $stmt->fetch()['t'];
-
-$stmt = $pdo->prepare(
-  "SELECT id, nome, nome_social, tipo_pessoa, cpf_cnpj, email, celular, tem_whatsapp,
-          cidade, uf, distancia, categoria, equipe, origem, status_cadastro, criado_em
-   FROM inscricoes $where ORDER BY criado_em DESC LIMIT $limite OFFSET $offset"
-);
-$stmt->execute($params);
+$total = InscricaoRepository::contar($pdo, $busca);
 
 $dados = [];
-foreach ($stmt->fetchAll() as $i) {
+foreach (InscricaoRepository::buscar($pdo, $busca, $limite, $offset) as $i) {
   $dados[] = [
     'id' => (int) $i['id'],
     'nome' => $i['nome'],

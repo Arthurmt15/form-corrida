@@ -1,8 +1,9 @@
 <?php
 // Contexto: lista com busca + paginação + headers de segurança. LGPD: CPF mascarado.
-require 'seguranca.php';
-require 'conexao.php';
-require 'validacao.php';
+require 'src/Seguranca.php';
+require 'config/database.php';
+require 'src/Validacao.php';
+require 'src/InscricaoRepository.php';
 
 $busca = trim($_GET['q'] ?? '');
 $pagina = max(1, (int) ($_GET['pagina'] ?? 1));
@@ -12,22 +13,8 @@ $inscricoes = [];
 $total = 0;
 
 if ($pdo && $db_ok) {
-  $where = '';
-  $params = [];
-  if ($busca !== '') {
-    $where = 'WHERE nome LIKE :q OR email LIKE :q OR cidade LIKE :q';
-    $params[':q'] = "%$busca%";
-  }
-  // COUNT filtrado pela busca (legível e separado da listagem).
-  $stmt = $pdo->prepare("SELECT COUNT(*) AS t FROM inscricoes $where");
-  $stmt->execute($params);
-  $total = (int) $stmt->fetch()['t'];
-  $stmt = $pdo->prepare(
-    "SELECT id, nome, cpf_cnpj, email, celular, cidade, uf, distancia, status_cadastro, criado_em
-     FROM inscricoes $where ORDER BY criado_em DESC LIMIT $por_pagina OFFSET $offset"
-  );
-  $stmt->execute($params);
-  $inscricoes = $stmt->fetchAll();
+  $total = InscricaoRepository::contar($pdo, $busca);
+  $inscricoes = InscricaoRepository::buscar($pdo, $busca, $por_pagina, $offset);
 }
 $total_paginas = max(1, (int) ceil($total / $por_pagina));
 $q_esc = htmlspecialchars($busca, ENT_QUOTES, 'UTF-8');

@@ -1,8 +1,8 @@
 <?php
 // Contexto: página principal — shell moderno (hero/cards) + 4 parciais do formulário.
-require 'seguranca.php';
-require 'csrf.php';
-require 'conexao.php'; ?>
+require 'src/Seguranca.php';
+require 'src/Csrf.php';
+require 'config/database.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>

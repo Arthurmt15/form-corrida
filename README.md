@@ -1,8 +1,23 @@
 # form-corrida
 
-Formulário de inscrição para corrida em PHP + MySQL + Bootstrap 5.
+Formulário de inscrição para corrida. Duas versões:
 
-## Stack
+- **Raiz (legado):** PHP puro + PDO + MySQL, sem framework.
+- **`laravel/` (atual):** port Laravel 12 — models, FormRequest, API Resource, Blade, Pest/PHPUnit.
+
+## Laravel (`laravel/`)
+
+```bash
+cd laravel
+composer install
+php artisan migrate   # sqlite zero-config (troque DB_* no .env p/ MySQL)
+php artisan test      # 6 testes de feature
+php artisan serve     # http://127.0.0.1:8000
+```
+
+Rotas: `/inscricoes/create` (form), `/inscricoes` (lista), `/consulta` (front da API), `/api/inscricoes` (JSON).
+
+## Stack (legado)
 
 - PHP 8 + PDO (prepared statements)
 - MySQL (`corrida_db`, tabela `inscricoes`)

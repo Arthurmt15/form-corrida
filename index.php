@@ -28,9 +28,6 @@ require 'conexao.php'; ?>
     <?php if (isset($_GET['erro'])): ?>
       <div class="alert alert-danger"><?= htmlspecialchars($_GET['erro']) ?></div>
     <?php endif; ?>
-    <?php if (empty($db_ok)): ?>
-      <div class="notice"><strong>ⓘ</strong><span>Modo visual — inicie o MySQL e importe o <b>banco.sql</b> para salvar.</span></div>
-    <?php endif; ?>
 
     <form action="salvar.php" method="POST" class="needs-validation" novalidate>
       <?= csrf_input() ?>

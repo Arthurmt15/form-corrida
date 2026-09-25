@@ -66,7 +66,7 @@ $dados = [
 // 5. Validação central (regras em validacao.php, cobertas por testes.php).
 $erros = validar_inscricao($dados);
 if ($erros) falhar($erros[0]);
-if (!$db_ok || !$pdo) falhar('Banco indisponível. Inicie o MySQL e importe o banco.sql.');
+if (!$db_ok || !$pdo) falhar('Serviço temporariamente indisponível. Tente novamente em instantes.');
 
 try {
   // 6. SQL com placeholders = anti SQL injection (nunca concatena valor).

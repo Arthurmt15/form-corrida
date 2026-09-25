@@ -54,6 +54,7 @@ $q_esc = htmlspecialchars($busca, ENT_QUOTES, 'UTF-8');
       <form method="GET" class="search-row" style="flex:1">
         <input type="search" name="q" placeholder="Buscar nome, e-mail, cidade" value="<?= $q_esc ?>">
         <button class="primary">Buscar</button>
+        <a href="consulta.php" class="outline" style="display:inline-flex;align-items:center;padding:0 16px;text-decoration:none;font-weight:700;font-size:12px;background:#fff;color:#1559d8;border:1px solid #1559d8;border-radius:5px;height:38px">Via API</a>
         <a href="index.php" class="outline" style="display:inline-flex;align-items:center;padding:0 16px;text-decoration:none;font-weight:700;font-size:12px;background:#fff;color:#1559d8;border:1px solid #1559d8;border-radius:5px;height:38px">Nova Inscrição</a>
       </form>
     </div>

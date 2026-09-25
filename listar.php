@@ -8,17 +8,21 @@ $inscricoes = $pdo->query("SELECT * FROM inscricoes ORDER BY criado_em DESC")->f
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inscritos - Corrida</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body class="bg-white">
 <div class="container py-5">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3>🏁 Inscritos (<?= count($inscricoes) ?>)</h3>
-    <a href="index.php" class="btn btn-primary">Nova Inscrição</a>
+  <div class="card-tema card shadow p-3 mb-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h3 class="mb-0 titulo-faixa">🏁 Inscritos (<?= count($inscricoes) ?>)</h3>
+      <a href="index.php" class="btn btn-amarelo">Nova Inscrição</a>
+    </div>
+  </div>
   </div>
   <div class="card shadow">
     <div class="table-responsive">
       <table class="table table-striped mb-0">
-        <thead class="table-dark">
+        <thead class="thead-tema">
           <tr>
             <th>#</th><th>Nome</th><th>E-mail</th><th>Distância</th><th>Categoria</th><th>Camiseta</th><th>Data</th>
           </tr>
@@ -29,7 +33,7 @@ $inscricoes = $pdo->query("SELECT * FROM inscricoes ORDER BY criado_em DESC")->f
             <td><?= $i['id'] ?></td>
             <td><?= htmlspecialchars($i['nome']) ?></td>
             <td><?= htmlspecialchars($i['email']) ?></td>
-            <td><span class="badge bg-info text-dark"><?= $i['distancia'] ?></span></td>
+            <td><span class="badge badge-distancia"><?= $i['distancia'] ?></span></td>
             <td><?= htmlspecialchars($i['categoria']) ?></td>
             <td><?= $i['tamanho_camiseta'] ?></td>
             <td><?= date('d/m/Y H:i', strtotime($i['criado_em'])) ?></td>

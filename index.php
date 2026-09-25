@@ -6,16 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inscrição - Corrida</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body class="bg-white">
 
 <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-lg-8">
 
-      <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-          <h4 class="mb-0">🏃 Formulário de Inscrição - Corrida</h4>
+      <div class="card shadow card-tema">
+        <div class="card-header card-header-tema">
+          <h4 class="mb-0 titulo-faixa">🏃 Formulário de Inscrição - Corrida</h4>
         </div>
         <div class="card-body">
 
@@ -114,9 +115,9 @@
             </div>
 
             <div class="col-12 d-grid d-md-flex gap-2 justify-content-md-end">
-              <button type="reset" class="btn btn-secondary">Limpar</button>
-              <button type="submit" class="btn btn-primary">Confirmar Inscrição</button>
-              <a href="listar.php" class="btn btn-outline-success">Ver Inscritos</a>
+              <button type="reset" class="btn btn-preto">Limpar</button>
+              <button type="submit" class="btn btn-azul">Confirmar Inscrição</button>
+              <a href="listar.php" class="btn btn-amarelo">Ver Inscritos</a>
             </div>
 
           </form>

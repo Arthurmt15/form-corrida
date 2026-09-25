@@ -25,6 +25,9 @@ require 'conexao.php'; ?>
           <?php if (isset($_GET['erro'])): ?>
             <div class="alert alert-danger"><?= htmlspecialchars($_GET['erro']) ?></div>
           <?php endif; ?>
+          <?php if (empty($db_ok)): ?>
+            <div class="alert alert-warning">Sem conexão MySQL — formulário em modo visual. Inicie o MySQL e importe o banco.sql para salvar.</div>
+          <?php endif; ?>
           <form action="salvar.php" method="POST" class="row g-3 needs-validation" novalidate>
             <?php include 'form-identificacao.php'; ?>
             <?php include 'form-contato.php'; ?>

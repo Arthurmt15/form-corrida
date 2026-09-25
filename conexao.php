@@ -15,6 +15,10 @@ $options = [
 
 try {
   $pdo = new PDO($dsn, $user, $pass, $options);
+  $db_ok = true;
 } catch (PDOException $e) {
-  die('Erro na conexão: ' . $e->getMessage());
+  // Contexto: sem MySQL o formulário ainda renderiza; salvar/listar exibem aviso.
+  $pdo = null;
+  $db_ok = false;
+  $db_erro = $e->getMessage();
 }

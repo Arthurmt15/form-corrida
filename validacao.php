@@ -16,9 +16,43 @@ function data_ok(string $v): bool {
   return $d && $d->format('Y-m-d') === $v && $v <= date('Y-m-d');
 }
 
+function cpf_digitos_ok(string $n): bool {
+  if (strlen($n) !== 11 || preg_match('/^(\d)\1{10}$/', $n)) return false;
+  for ($t = 9; $t < 11; $t++) {
+    $s = 0;
+    for ($i = 0; $i < $t; $i++) $s += (int) $n[$i] * (($t + 1) - $i);
+    $d = ((10 * $s) % 11) % 10;
+    if ((int) $n[$t] !== $d) return false;
+  }
+  return true;
+}
+
+function cnpj_digitos_ok(string $n): bool {
+  if (strlen($n) !== 14 || preg_match('/^(\d)\1{13}$/', $n)) return false;
+  $p1 = [5,4,3,2,9,8,7,6,5,4,3,2];
+  $p2 = [6,5,4,3,2,9,8,7,6,5,4,3,2];
+  foreach ([$p1, $p2] as $k => $pesos) {
+    $s = 0;
+    for ($i = 0; $i < 12 + $k; $i++) $s += (int) $n[$i] * $pesos[$i];
+    $d = $s % 11 < 2 ? 0 : 11 - ($s % 11);
+    if ((int) $n[12 + $k] !== $d) return false;
+  }
+  return true;
+}
+
 function cpf_cnpj_ok(string $v): bool {
   $n = preg_replace('/\D/', '', $v);
-  return in_array(strlen($n), [11, 14], true); // dígitos: CPF=11, CNPJ=14
+  if (strlen($n) === 11) return cpf_digitos_ok($n);
+  if (strlen($n) === 14) return cnpj_digitos_ok($n);
+  return false;
+}
+
+// LGPD: mascara documento na exibição (mostra só início/fim).
+function mascarar_doc(string $v): string {
+  $n = preg_replace('/\D/', '', $v);
+  if (strlen($n) === 11) return substr($n, 0, 3) . '.***.***-' . substr($n, -2);
+  if (strlen($n) === 14) return substr($n, 0, 2) . '.***.***/****-' . substr($n, -2);
+  return '***';
 }
 
 function cep_ok(string $v): bool {
@@ -42,7 +76,7 @@ function validar_inscricao(array $d): array {
   }
   if (!empty($d['email']) && !email_ok($d['email'])) $erros[] = 'E-mail principal inválido.';
   if (!empty($d['email2']) && !email_ok($d['email2'])) $erros[] = 'E-mail secundário inválido.';
-  if (!empty($d['cpf_cnpj']) && !cpf_cnpj_ok($d['cpf_cnpj'])) $erros[] = 'CPF/CNPJ inválido (11 ou 14 dígitos).';
+  if (!empty($d['cpf_cnpj']) && !cpf_cnpj_ok($d['cpf_cnpj'])) $erros[] = 'CPF/CNPJ inválido (dígitos verificadores).';
   if (!empty($d['cep']) && !cep_ok($d['cep'])) $erros[] = 'CEP inválido.';
   if (!empty($d['uf']) && !uf_ok($d['uf'])) $erros[] = 'UF inválida.';
   if (!empty($d['data_nascimento']) && !data_ok($d['data_nascimento'])) $erros[] = 'Data de nascimento/fundação inválida.';

@@ -1,9 +1,9 @@
 <?php
-// Contexto: conexão PDO com MySQL (corrida_db). Ajuste host/user/pass se preciso.
-$host = 'localhost';
-$db   = 'corrida_db';
-$user = 'root';
-$pass = '';
+// Contexto: conexão PDO. Credenciais via env (ver .env.example); fallback local.
+$host = getenv('DB_HOST') ?: 'localhost';
+$db   = getenv('DB_NAME') ?: 'corrida_db';
+$user = getenv('DB_USER') ?: 'root';
+$pass = getenv('DB_PASS') ?: '';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

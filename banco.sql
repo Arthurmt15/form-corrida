@@ -30,5 +30,9 @@ CREATE TABLE IF NOT EXISTS inscricoes (
   origem VARCHAR(50) NOT NULL DEFAULT 'Site',
   status_cadastro ENUM('Ativo','Inativo','Bloqueado') NOT NULL DEFAULT 'Ativo',
   aceite_regulamento TINYINT(1) NOT NULL DEFAULT 0,
-  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_cpf_cnpj (cpf_cnpj),
+  KEY idx_cidade (cidade),
+  KEY idx_status (status_cadastro),
+  KEY idx_distancia (distancia)
 );

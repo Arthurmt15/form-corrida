@@ -12,9 +12,12 @@ function check(string $nome, bool $cond): void {
 
 check('email válido', email_ok('a@b.com'));
 check('email inválido', !email_ok('a@b'));
-check('cpf 11 dígitos', cpf_cnpj_ok('123.456.789-09'));
-check('cnpj 14 dígitos', cpf_cnpj_ok('12.345.678/0001-90'));
+check('cpf válido (dígitos)', cpf_cnpj_ok('529.982.247-25'));
+check('cpf inválido (dígitos)', !cpf_cnpj_ok('123.456.789-00'));
+check('cnpj válido (dígitos)', cpf_cnpj_ok('11.222.333/0001-81'));
+check('cnpj inválido (dígitos)', !cpf_cnpj_ok('12.345.678/0001-90'));
 check('cpf curto rejeitado', !cpf_cnpj_ok('123'));
+check('mascara cpf', mascarar_doc('52998224725') === '529.***.***-25');
 check('cep com hífen', cep_ok('01310-100'));
 check('cep 8 dígitos', cep_ok('01310100'));
 check('cep inválido', !cep_ok('123'));
@@ -28,7 +31,7 @@ check('limpar remove tags', limpar('<b>oi</b>') === 'oi');
 
 // Pacote completo válido não gera erros.
 $ok = [
-  'nome' => 'Ana', 'cpf_cnpj' => '12345678909', 'data_nascimento' => '2000-01-01',
+  'nome' => 'Ana', 'cpf_cnpj' => '52998224725', 'data_nascimento' => '2000-01-01',
   'email' => 'a@b.com', 'celular' => '11999999999', 'cep' => '01310-100',
   'logradouro' => 'Rua X', 'numero' => '10', 'bairro' => 'B', 'cidade' => 'SP',
   'uf' => 'SP', 'distancia' => '5km', 'tamanho_camiseta' => 'M',

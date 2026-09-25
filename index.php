@@ -1,5 +1,7 @@
 <?php
 // Contexto: página principal — monta o formulário por includes (4 parciais) + validações Bootstrap.
+require 'seguranca.php';
+require 'csrf.php';
 require 'conexao.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -29,6 +31,9 @@ require 'conexao.php'; ?>
             <div class="alert alert-warning">Sem conexão MySQL — formulário em modo visual. Inicie o MySQL e importe o banco.sql para salvar.</div>
           <?php endif; ?>
           <form action="salvar.php" method="POST" class="row g-3 needs-validation" novalidate>
+            <?= csrf_input() ?>
+            <!-- Honeypot anti-bot: humanos não preenchem (campo oculto). -->
+            <input type="text" name="site_url" value="" style="display:none" tabindex="-1" autocomplete="off">
             <?php include 'form-identificacao.php'; ?>
             <?php include 'form-contato.php'; ?>
             <?php include 'form-endereco.php'; ?>

@@ -61,6 +61,14 @@ CSRF nativo (Blade) + token de uso único · `throttle` no POST (10/min) e na AP
 - Todo push vai para a branch **`main`**.
 - Commits em PT-BR: `feat:`, `fix:`, `style:`, `docs:`, `refactor:`, `chore:`, `test:`.
 
+## Checklist de produção
+
+- [ ] `APP_DEBUG=false` e `APP_ENV=production` no `.env` (nunca vazar stack trace).
+- [ ] `APP_KEY` gerada (`php artisan key:generate`) e HTTPS ativo + `SESSION_SECURE_COOKIE=true`.
+- [ ] Banco MySQL com usuário de app (sem root) + backup periódico.
+- [ ] Legado servido com `legacy/router.php` (ou `.htaccess`) — `banco.sql`, `.env*`, `config/`, `src/` retornam 404.
+- [ ] `vendor/`, `.env`, `*.sqlite` fora do git (já ignorados).
+
 ## Problemas comuns
 
 - **Porta ocupada:** `:8000` é do legado, `:8001` do Laravel — troque com `--port=`.

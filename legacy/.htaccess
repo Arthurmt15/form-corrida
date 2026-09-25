@@ -1,0 +1,5 @@
+# Contexto: mesma blindagem do router.php, para produção sob Apache.
+<FilesMatch "(\.(sql|env|md|lock|xml|yml|yaml|dist)$|^\.)">
+  Require all denied
+</FilesMatch>
+RedirectMatch 404 ^/(config|src)(/|$)
